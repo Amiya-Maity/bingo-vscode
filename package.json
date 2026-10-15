@@ -1,0 +1,56 @@
+{
+  "name": "bingo-vscode",
+  "displayName": "Bingo VsCode",
+  "description": "Play multiplayer Bingo inside the Explorer sidebar while coding.",
+  "version": "1.0.0",
+  "publisher": "amiya",
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Amiya-Maity/bingo-vscode.git"
+  },
+  "categories": [
+    "Other"
+  ],
+  "main": "./extension.js",
+  "activationEvents": [
+    "onView:bingo.gameView",
+    "onCommand:bingo.open"
+  ],
+  "contributes": {
+    "commands": [
+      {
+        "command": "bingo.open",
+        "title": "Bingo: Open Multiplayer Game"
+      }
+    ],
+    "views": {
+      "explorer": [
+        {
+          "id": "bingo.gameView",
+          "name": "Multiplayer Bingo",
+          "type": "webview"
+        }
+      ]
+    },
+    "menus": {
+      "commandPalette": [
+        {
+          "command": "bingo.open"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "package": "vsce package"
+  },
+  "dependencies": {
+    "socket.io-client": "^4.8.1"
+  },
+  "devDependencies": {
+    "@vscode/vsce": "^3.2.1"
+  }
+}
