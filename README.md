@@ -1,229 +1,83 @@
-# 🎱 Multiplayer Bingo
 
-A multiplayer Bingo game that runs directly inside the VS Code or Kiro Explorer sidebar. Connect with a friend, mark numbers on your board, and compete to complete five lines first!
+# 🎯 Multiplayer Bingo
 
-## ✨ Features
-
-- **Multiplayer gameplay** — Play with one friend using a shared server.
-- **Random Bingo board** — Each player receives a shuffled board containing numbers 1–25.
-- **Turn-based gameplay** — Only the player whose turn it is can select a number.
-- **Live synchronization** — Game state and marked numbers are synchronized through Socket.IO.
-- **Five-line victory** — Complete five lines to win Bingo.
-- **Connection status** — Quickly identify whether the server is connecting, connected, or disconnected.
-- **Collapsible connection settings** — Automatically collapse the settings after connecting.
-- **Turn indicator** — See whose turn it is beside your board.
-- **Ready system** — Both players must be ready before a game starts.
-- **New Game** — Reset the game and prepare for another round.
-- **Game Action Log** — Review game events, player readiness, selected numbers, and results.
-- **Compact sidebar UI** — Play without leaving your coding environment.
-
-## 🛠️ Tech Stack
-
-- JavaScript
-- Node.js
-- Visual Studio Code Extension API
-- Kiro IDE
-- Socket.IO Client
-- Socket.IO server for multiplayer communication
-- HTML and CSS for the sidebar interface
-
-## 📋 Prerequisites
-
-- Node.js and npm
-- VS Code or Kiro
-- A running Bingo backend server
-- The server passcode required to authenticate players
-
-## 🚀 Installation
-
-### 1. Clone the repository
-
-```bash
-git clone <YOUR_REPOSITORY_URL>
-cd <YOUR_PROJECT_DIRECTORY>
-```
-
-Replace the placeholders with your repository URL and directory name.
-
-### 2. Install dependencies
-
-```bash
-npm install
-```
-
-### 3. Run the extension locally
-
-1. Open the project folder in VS Code or Kiro.
-2. Press `F5` to launch the Extension Development Host, if your development environment supports it.
-3. Open the Explorer sidebar.
-4. Locate **Multiplayer Bingo**.
-5. Enter the server URL and passcode.
-6. Click **Connect**.
-
-If your Kiro setup does not support launching an Extension Development Host with `F5`, package the extension and install the generated VSIX file instead.
-
-## ⚙️ Configuration
-
-The connection panel accepts the following settings:
-
-| Setting | Description | Example |
-|---|---|---|
-| Server URL | Base URL of the Bingo backend | `https://hackend.in/bingob` |
-| Passcode | Shared server authentication passcode | Your configured passcode |
-
-The extension derives the Socket.IO path from the server URL.
-
-For example:
-
-```text
-Server URL: https://hackend.in/bingob
-Socket.IO path: /bingob/socket.io
-```
-
-Make sure your reverse proxy and backend are configured to serve Socket.IO at the expected path.
+A multiplayer Bingo game you can play with friends directly inside VS Code or Kiro. Join the same room, get your own randomized number board, take turns selecting numbers, and race to complete **5 Bingo lines** to win!
 
 ## 🎮 How to Play
 
-1. **Connect:** Both players connect to the same Bingo server using the correct passcode.
-2. **Get your board:** Each player receives a randomly shuffled board containing numbers 1–25.
-3. **Wait for your friend:** The game waits until both players are connected and have registered their boards.
-4. **Get ready:** Both players click **Ready**.
-5. **Take turns:** The player whose turn is shown beside the board selects an unmarked number.
-6. **Synchronize:** The server validates the move and broadcasts the updated game state.
-7. **Win:** Complete five lines to win Bingo.
-8. **Play again:** Use **New Game** to reset the round.
+### 1. Join a Room
+- Open the Multiplayer Bingo extension.
+- Enter your player name.
+- Enter the room passcode shared by your friends.
+- Connect to the room.
 
-## 🧩 Game Rules
+**Important:** Every player must use the same passcode to join the same game room.
 
-- Two players participate in a game.
-- Each board contains the numbers 1–25 in a random order.
-- Both players must be ready before gameplay starts.
-- Players take turns selecting numbers.
-- Moves are validated by the server.
-- Marked numbers are synchronized between players.
-- The first player to complete five lines wins.
+### 2. Get Your Board
+- Each player receives their own **5 × 5 board** containing the numbers 1–25 in a randomized order.
+- You can shuffle your board before marking Ready.
+- You can also drag and drop numbers to rearrange your board before the game starts.
+- Once you mark Ready, your board is locked.
 
-The server should remain authoritative for turn validation, marked numbers, and winner detection.
+### 3. Mark Ready
+- Press **Ready** when your board is prepared.
+- The game starts when at least **2 players** have joined, registered their boards, and marked Ready.
+- Wait for other players to get ready.
 
-## 🔌 Backend Protocol
+### 4. Take Turns
+- The game assigns turns to players in order.
+- When it is your turn, select a number from your board.
+- Your selection is shared with the room and marked on the game boards.
+- Only the player whose turn it is can select a number.
+- Wait for your next turn after making a selection.
 
-The extension communicates with the backend using Socket.IO messages.
+### 5. Win the Game
+- Complete **5 Bingo lines** to win.
+- Your completed lines can be horizontal, vertical, or diagonal.
+- The game announces the winner when a player reaches the winning condition.
 
-### Client-to-server messages
+## 📏 Game Rules
 
-| Message type | Purpose |
-|---|---|
-| `registerBoard` | Register the player's board |
-| `ready` | Indicate that the player is ready |
-| `move` | Submit a selected number |
-| `newGame` | Request a new round |
+1. **Players:** At least 2 players are required to start a game.
+2. **Board:** Each player has a 5 × 5 board containing numbers 1–25, each appearing once.
+3. **Preparation:** Players can shuffle or rearrange their boards before marking Ready.
+4. **Board lock:** A player's board cannot be rearranged after they mark Ready or once the game starts.
+5. **Readiness:** Every player in the room must be Ready before the game starts.
+6. **Turn order:** Players take turns in the order assigned by the game.
+7. **Valid moves:** Only the current player can select a number during their turn.
+8. **Shared selections:** Selected numbers are tracked by the game and reflected in the boards.
+9. **Winning condition:** A player wins by completing 5 lines.
+10. **Valid lines:** Horizontal rows, vertical columns, and both diagonals count as lines.
+11. **New Game:** Use **New Game** to start a fresh round. Players must prepare their boards and mark Ready again.
 
-Example board registration:
+## 🏆 What Counts as a Bingo Line?
 
-```javascript
-{
-    type: 'registerBoard',
-    board: [1, 7, 12, 18, 24 /* remaining numbers */]
-}
-```
+A line consists of 5 marked cells in any one of these directions:
 
-The actual board sent by the extension contains all 25 unique numbers from 1 to 25.
+- **Horizontal:** Any complete row.
+- **Vertical:** Any complete column.
+- **Diagonal:** Either of the two diagonals crossing the board.
 
-Example move:
+You need **5 completed lines** to win.
 
-```javascript
-{
-    type: 'move',
-    number: 12
-}
-```
+## 🔄 Starting a New Game
 
-### Server-to-client messages
+After a winner is announced:
 
-| Message type | Purpose |
-|---|---|
-| `welcome` | Assign the player an ID |
-| `serverState` | Broadcast the current game state |
-| `error` | Report a server-side error |
+1. Press **New Game** to request a fresh round.
+2. Prepare your board again.
+3. Mark Ready.
+4. Wait for everyone else to be ready.
+5. Play another round!
 
-Example welcome message:
+## 💡 Tips
 
-```javascript
-{
-    type: 'welcome',
-    playerId: 'player-id'
-}
-```
+- Choose a name your friends can recognize.
+- Share your room passcode privately with the players you want to invite.
+- Arrange your board before marking Ready.
+- Keep an eye on the current-turn indicator.
+- Watch the game activity log for player actions and game updates.
 
-The `serverState` message should contain the game state, including the players, readiness, game status, current turn, winner, and marked numbers.
+## 🎉 Have Fun!
 
-## 🔐 Security
-
-- The extension sends the configured passcode through Socket.IO authentication.
-- The backend should validate the passcode before allowing a connection.
-- The backend should validate every move rather than trusting the client.
-- Use HTTPS in production.
-- Keep server credentials out of public repositories.
-- Apply appropriate connection limits and input validation on the backend.
-
-## 📦 Packaging the Extension
-
-Install the dependencies and package the extension:
-
-```bash
-npm install
-npm run package
-```
-
-If the packaging script is configured as shown in `package.json`, this creates a `.vsix` package in the project directory.
-
-Install the package using the Extensions view or the IDE's supported VSIX installation workflow.
-
-## 🐛 Troubleshooting
-
-### Connect button does nothing
-
-- Check the Extension Development Host or webview console for JavaScript errors.
-- Verify that the `getFriend()` function and all its references use the same name.
-- Confirm that the webview script initializes successfully.
-
-### Connection fails
-
-- Check the server URL and passcode.
-- Confirm that the backend is running.
-- Verify that the Socket.IO path matches the reverse proxy configuration.
-- Check the backend logs for authentication or connection errors.
-
-### A friend cannot join
-
-- Confirm that both players use the same server and passcode.
-- Ensure the server permits two simultaneous players.
-- Check that both boards have been registered successfully.
-
-### The game does not start
-
-- Ensure both players are connected.
-- Confirm that both players have registered their boards.
-- Ensure both players click **Ready**.
-
-### Game state does not synchronize
-
-- Verify that the backend broadcasts `serverState` after relevant state changes.
-- Confirm that the client and server use the same message names and payload structure.
-- Check the server logs for rejected moves or other errors.
-
-## 🗺️ Project Structure
-
-```text
-bingo-multiplayer/
-├── extension.js       # Extension activation, webview, and game client
-├── package.json       # Extension metadata, commands, view, dependencies
-├── package-lock.json  # Dependency lockfile
-└── README.md          # Project documentation
-```
-
-The backend is maintained separately unless you have included it in this repository.
-
-## 📄 License
-
-Add your preferred license here, such as the MIT License, if applicable.
+Gather your friends, join the same room, and see who can complete five Bingo lines first!

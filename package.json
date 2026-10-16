@@ -1,9 +1,9 @@
 {
-  "name": "bingo-vscode",
-  "displayName": "Bingo VsCode",
+  "name": "bingo-game-vscode",
+  "displayName": "Bingo in VsCode",
   "description": "Play multiplayer Bingo inside the Explorer sidebar while coding.",
-  "version": "1.0.0",
-  "publisher": "amiya",
+  "version": "1.2.5",
+  "publisher": "amiyamaity",
   "license": "MIT",
   "engines": {
     "vscode": "^1.85.0"
